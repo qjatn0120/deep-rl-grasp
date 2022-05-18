@@ -38,6 +38,7 @@ class GraspEnv(gym.Env):
 		self._image_col = self._config["camera"]["image_column"]
 
 		self._max_step_per_episode = self._config["environment"]["max_step_per_episode"]
+		self.num_envs = 1
 
 		self._image_channel = 0;
 		if self._use_rgb_image:

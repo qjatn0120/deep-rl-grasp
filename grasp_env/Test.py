@@ -1,9 +1,11 @@
 from stable_baselines3 import SAC
 from stable_baselines3.sac.policies import CnnPolicy
+from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 from Environment import GraspEnv
 
+env = DummyVecEnv([GraspEnv])
 
-env = GraspEnv()
+env = VecNormalize(env, norm_obs = True, norm_reward = True)
 
 model = SAC(CnnPolicy,
 			env,
