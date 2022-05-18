@@ -1,6 +1,6 @@
 import pybullet as p
 import numpy as np
-import math
+from math import sqrt
 from Scene import FloorScene
 
 from numpy.random import Generator, PCG64
@@ -167,7 +167,7 @@ class World():
 				bodyUniqueId = object_id,
 				physicsClientId = self._uid)
 
-			distance.append(math.dist(pos, obj_pos))
+			distance.append(sqrt(sum((p1 - p2) ** 2.0 for p1, p2 in zip(pos, obj_pos))))
 
 		return min(distance)
 
