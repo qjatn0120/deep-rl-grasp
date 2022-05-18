@@ -1,5 +1,6 @@
 import pybullet as p
 import numpy as np
+import math
 from Scene import FloorScene
 
 from numpy.random import Generator, PCG64
@@ -36,6 +37,8 @@ class World():
 
 		self._uid = p.connect(
 			p.GUI if self._visualize else p.DIRECT)
+
+		print(self._visualize)
 
 		if self._world_type == "Floor World":
 			self._scene = FloorScene(self, config, self._gen, self._train)
@@ -153,6 +156,22 @@ class World():
 	def is_done(self):
 
 		return len(self._scene.get_targets()) == 0
+
+	def get_distance(self, pos):
+
+		distance = []
+
+		for object_id in self._scene.get_targets():
+
+			obj_pos, _ = p.getBasePositionAndOrientation(
+				bodyUniqueId = object_id,
+				physicsClientId = self._uid)
+
+			distance.append(math.dist(pos, obj_pos))
+
+		return min(distance)
+
+			
 
 def main():
 

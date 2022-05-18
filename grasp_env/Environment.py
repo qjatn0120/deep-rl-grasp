@@ -54,8 +54,6 @@ class GraspEnv(gym.Env):
 		)
 
 	def reset(self):
-
-		print("start")
 		self._world.reset_sim()
 		self._actuator.reset()
 		self._reward.reset()
@@ -68,6 +66,8 @@ class GraspEnv(gym.Env):
 	def step(self, action):
 
 		self._actuator.step(action)
+
+		self._n_step += 1
 
 		# Calculate State
 		state = self._camera.render_image()

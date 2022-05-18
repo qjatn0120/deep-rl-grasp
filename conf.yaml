@@ -43,6 +43,7 @@ reward:
   grip_reward: 0.5
   lift_reward: 1
   task_reward: 1
+  approach_reward: 0.5
 
 environment:
 

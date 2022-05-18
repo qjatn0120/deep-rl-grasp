@@ -16,19 +16,44 @@ class Reward():
 
 		self._task_reward = self._reward_config.get("task_reward", 1)
 
+		self._approach_reward = self._reward_config.get("approach_reward", 0.5)
+
 	def reset(self):
 
 		self._is_grip = False
+
+		self._total_approach_reward = 0
 
 		self._total_lift_reward = 0
 
 		self._finish_task = False
 
+		pos, _ = self._actuator.get_pos()
+
+		self._init_object_distance = self._world.get_distance(pos)
+
 	def get_reward(self):
 
 		self._is_lift = self._actuator.is_lift()
 
-		return self._get_grip_reward() + self._get_lift_reward() + self._get_task_reward()
+		return self._get_approach_reward() + self._get_grip_reward() + self._get_lift_reward() + self._get_task_reward()
+
+	def _get_approach_reward(self):
+
+		pos, _ = self._actuator.get_pos()
+
+		object_distance = self._world.get_distance(pos)
+
+		if self._is_lift:
+			r = self._approach_reward
+		else:
+			r = (self._init_object_distance - object_distance) * self._approach_reward * 2
+
+		r = r - self._total_approach_reward
+
+		self._total_approach_reward += r
+
+		return r
 
 	def _get_lift_pos(self):
 
